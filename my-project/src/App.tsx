@@ -23,19 +23,22 @@ function App() {
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo', // Or 'gpt-3.5-turbo'
-          prompt,
-          max_tokens: 150,
+          model: 'gpt-3.5-turbo',  // Or gpt-4
+          messages: [
+            { role: 'user', content: prompt},
+          ],
+          max_tokens: 50,
           temperature: 0.7,
         }),
       });
+      
 
       if (!res.ok) {
         throw new Error('Failed to fetch GPT response');
       }
 
       const data = await res.json();
-      setResponse(data.choices[0].text);
+      setResponse(data.choices[0].message.content);
     } catch (error) {
       console.error('Error fetching GPT response:', error);
       setResponse('An error occurred while fetching the response.');
@@ -68,7 +71,7 @@ function App() {
     <>
 
       <section >
-        <div className='h-[1340px] bg-amber-200 w-auto relative'>
+        <div className='h-[1340px] w-auto relative'>
           <section className='grid lg:grid-cols-12 lg:gap-[32px] mb-[45px] ml-[64px] mt-[32px] mr-[32px]'>
 
             <div className='col-span-4 bg-transparent h-[123px] rounded-[40] mr-[320px]'>
@@ -79,7 +82,7 @@ function App() {
             </div>
 
             <div className='col-span-8 bg-transparent h-[116] w-[900] mr-[0] ml-[140px] rounded-[40]'>
-              <h1 className='text-[60px] text-white -mt-[29] font-sans font-semibold'>
+              <h1 className='text-[60px] text-white drop-shadow-lg -mt-[29] font-sans font-semibold'>
                 Watch me fly
               </h1>
             </div>
@@ -98,8 +101,8 @@ function App() {
             <div className='col-span-3 h-[216px] bg-transparent mr-[48] ml-[32] rounded-[40] mt-[32px]'>
 
             </div>
-            <div className='col-span-5 h-[604px] bg-red-500 mr-[48] ml-[32] rounded-[40] mt-[32px]'>
-              <p>{response}</p>
+            <div className='col-span-5 h-[604px] bg-transparent border-blue-500 border-[10px] rounded-[45px] mr-[48] ml-[32] mt-[32px]'>
+              <p className='text-black ml-[20px] mt-[15px] mr-[20px]'>{response}</p>
             </div>
           </section>
         </div>
